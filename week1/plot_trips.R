@@ -154,4 +154,6 @@ trips %>% head()
     mutate(day_week = wday(ymd, label = TRUE)) %>% 
     group_by( hour = hour(starttime), ymd,day_week) %>% 
         summarise(n_trips = n() , .groups = "drop")%>%
-            group_by(day_week,hour) %>% summarise(avg = mean(n_trips),std = sd(n_trips), .groups = "drop")
+            group_by(day_week,hour) %>% summarise(avg = mean(n_trips),std = sd(n_trips), .groups = "drop") %>%
+            ggplot(aes(hour, avg)) + geom_line() + geom_ribbon(aes(ymin= avg - std, ymax = avg + std, alpha = 0.5)) + facet_wrap(~day_week)
+ 
